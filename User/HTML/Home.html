@@ -1,0 +1,656 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Mobi Comm - Instant Mobile Recharge</title>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+  <link href="https://fonts.googleapis.com/css2?family=Baloo+Bhaijaan+2:wght@400;600;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --primary-color: #dc3545;
+      --secondary-color: #6c757d;
+      --background-color: #F9F3F3;
+      --text-color: #333;
+    }
+    html {
+      scroll-behavior: smooth;
+    }
+    body {
+      background-color: var(--background-color) !important;
+      font-family: 'Baloo Bhaijaan 2', sans-serif !important;
+      margin: 0;
+      padding: 0;
+      font-size: 1.1rem;
+    }
+    header {
+      padding: 1rem 2rem;
+      background-color: #fff;
+      box-shadow: 0 0 10px rgba(0,0,0,0.1);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      position: fixed;
+      width: 100%;
+      z-index: 1000;
+    }
+    .brand-name {
+      font-size: 1.8rem;
+      font-weight: bold;
+      color: var(--primary-color);
+      margin-right: 1.5rem;
+      transition: all 0.3s ease;
+    }
+    .brand-name:hover {
+      transform: scale(1.1);
+      text-shadow: 0 0 15px rgba(220,53,69,0.3);
+    }
+    nav {
+      display: flex;
+      gap: 1rem;
+      align-items: center;
+    }
+    nav a {
+      color: var(--secondary-color);
+      text-decoration: none;
+      position: relative;
+      padding: 0.25rem 0;
+      cursor: pointer;
+    }
+    nav a::after {
+      content: "";
+      position: absolute;
+      left: 50%;
+      bottom: 0;
+      width: 0;
+      height: 2px;
+      background: var(--primary-color);
+      transition: width 0.3s ease, left 0.3s ease;
+    }
+    nav a:hover::after {
+      width: 100%;
+      left: 0;
+    }
+    .dropdown:hover .dropdown-menu {
+      display: block;
+    }
+    .dropdown-menu {
+      margin-top: 0;
+      border: none;
+      box-shadow: 0 0 10px rgba(0,0,0,0.1);
+      right: 0;
+      left: auto;
+    }
+    .dropdown-menu .dropdown-item {
+      transition: background-color 0.3s ease;
+      font-size: 1.1rem;
+    }
+    .dropdown-menu .dropdown-item:hover {
+      background-color: var(--primary-color);
+      color: #fff;
+    }
+    .btn-profile {
+      background: none;
+      border: none;
+      cursor: pointer;
+    }
+    .iphone-mockup {
+      position: relative;
+      width: 350px;
+      height: 750px;
+      overflow: visible;
+      margin-top: -20px;
+      animation: slideIn 1.5s ease-out forwards;
+    }
+    .iphone-mockup img {
+      width: 100%;
+      height: 100%;
+      object-fit: contain;
+    }
+    .floating-label {
+      position: absolute;
+      padding: 10px 18px;
+      font-size: 1rem;
+      font-weight: bold;
+      color: #333;
+      border-radius: 30px;
+      box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      white-space: nowrap;
+      background: #fff;
+      opacity: 0;
+      animation-duration: 0.8s;
+      animation-fill-mode: forwards;
+      animation-delay: 1.5s;
+      z-index: 10;
+    }
+    .floating-label i {
+      font-size: 1.2rem;
+      color: var(--primary-color);
+    }
+    .floating-label.right {
+      animation-name: fadeInRight;
+    }
+    .floating-label.left {
+      animation-name: fadeInLeft;
+    }
+    @keyframes slideIn {
+      from { transform: translateX(150vw); }
+      to { transform: translateX(0); }
+    }
+    @keyframes fadeInRight {
+      from { opacity: 0; transform: translateX(30px); }
+      to { opacity: 1; transform: translateX(0); }
+    }
+    @keyframes fadeInLeft {
+      from { opacity: 0; transform: translateX(-30px); }
+      to { opacity: 1; transform: translateX(0); }
+    }
+    main, section {
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      flex-direction: column;
+    }
+    .new-sim-section {
+      padding: 6rem 0;
+      background: #f8f9fa;
+    }
+    .new-sim-section h2 {
+      display: inline-block;
+      text-shadow: 2px 2px 5px rgba(0,0,0,0.2);
+    }
+    .new-sim-section p {
+      font-size: 1.15rem;
+      line-height: 1.6;
+    }
+    .plans-section {
+      padding: 6rem 0;
+      background: linear-gradient(135deg, #ffffff 0%, #f8f9fa 100%);
+    }
+    .plan-card {
+      background: linear-gradient(135deg, #dc3545 0%, #ff4757 100%);
+      border-radius: 20px;
+      padding: 2rem;
+      color: white;
+      position: relative;
+      overflow: hidden;
+      transition: transform 0.3s ease;
+    }
+    .plan-card::before {
+      content: "";
+      position: absolute;
+      top: -50%;
+      left: -50%;
+      width: 200%;
+      height: 200%;
+      background: linear-gradient(45deg, transparent 20%, rgba(255,255,255,0.1) 50%, transparent 80%);
+      transform: rotate(45deg);
+    }
+    .plan-card:hover {
+      transform: translateY(-10px);
+    }
+    .popular-badge {
+      position: absolute;
+      top: 20px;
+      right: 20px;
+      background: rgba(255,255,255,0.2);
+      padding: 8px 15px;
+      border-radius: 20px;
+      font-size: 0.9rem;
+    }
+    .price-tag {
+      font-size: 3rem;
+      font-weight: 700;
+      margin: 1.5rem 0;
+    }
+    .plan-feature {
+      display: flex;
+      align-items: center;
+      margin-bottom: 1rem;
+    }
+    .feature-icon {
+      width: 40px;
+      height: 40px;
+      background: rgba(255,255,255,0.2);
+      border-radius: 10px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-right: 15px;
+    }
+    .btn-plan {
+      background: white;
+      color: #dc3545;
+      border-radius: 12px;
+      padding: 12px 30px;
+      font-weight: 600;
+      transition: all 0.3s ease;
+      width: 100%;
+      margin-top: 1.5rem;
+      cursor: pointer;
+    }
+    .btn-plan:hover {
+      background: rgba(255,255,255,0.9);
+      transform: translateY(-2px);
+    }
+    .faq-section {
+      padding: 6rem 0;
+      background: linear-gradient(135deg, #ffffff, #f0f0f0);
+      border-top: 2px solid var(--primary-color);
+    }
+    .faq-section h2 {
+      animation: fadeInDown 1s ease-in-out;
+      margin-bottom: 2rem;
+      color: var(--primary-color);
+    }
+    @keyframes fadeInDown {
+      from { opacity: 0; transform: translateY(-20px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    .accordion-item {
+      border: none;
+      margin-bottom: 1rem;
+      border-radius: 10px;
+      overflow: hidden;
+      box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+    }
+    .faq-section .accordion-button {
+      background: rgba(220,53,69,0.1);
+      color: var(--primary-color);
+      font-weight: bold;
+      transition: transform 0.3s ease, background-color 0.3s ease;
+      border: none;
+    }
+    .faq-section .accordion-button:hover {
+      background: rgba(220,53,69,0.2);
+      transform: scale(1.02);
+    }
+    .faq-section .accordion-button:not(.collapsed) {
+      background: var(--primary-color);
+      color: #fff;
+    }
+    .faq-section .accordion-body {
+      background: #fff;
+      border-top: 1px solid #ddd;
+      font-size: 1rem;
+      line-height: 1.5;
+    }
+    footer .img-fluid {
+      height: 250px;
+      object-fit: cover;
+    }
+    #scrollTopBtn {
+      display: none;
+      position: fixed;
+      bottom: 30px;
+      right: 30px;
+      background: var(--primary-color);
+      color: white;
+      border: none;
+      border-radius: 50%;
+      width: 50px;
+      height: 50px;
+      font-size: 1.5rem;
+      cursor: pointer;
+      z-index: 1001;
+    }
+    .highlight {
+      animation: highlightAnim 1.5s ease;
+    }
+    @keyframes highlightAnim {
+      0% { box-shadow: 0 0 0px 0 rgba(220,53,69,0.7); }
+      50% { box-shadow: 0 0 20px 10px rgba(220,53,69,0.3); }
+      100% { box-shadow: 0 0 0px 0 rgba(220,53,69,0); }
+    }
+    /* Responsive adjustments */
+    @media (max-width: 768px) {
+      header { padding: 0.5rem 1rem; }
+      .brand-name { font-size: 1.5rem; }
+      main, section { padding: 2rem 1rem; flex-direction: column; }
+      .iphone-mockup { width: 280px; height: 600px; margin-top: 0; }
+      .floating-label { font-size: 0.9rem; padding: 8px 14px; }
+      .mobile-input-section .row { align-items: start; }
+      .mobile-input-section .col-md-6 { margin-bottom: 1rem; }
+      .mobile-input-section img { margin-bottom: 20px; } /* Added margin for spacing */
+    }
+    @media (max-width: 576px) {
+      .price-tag { font-size: 2.5rem; }
+      .plan-card { padding: 1.5rem; }
+      .btn-plan { padding: 10px 20px; }
+    }
+  </style>
+</head>
+<body>
+<!-- Header -->
+<header>
+  <div class="d-flex align-items-center">
+    <div class="brand-name">Mobi Comm</div>
+    <nav>
+      <a href="Home.html">Home</a>
+      <a href="New_Sim.html">New Connection</a>
+      <a href="Recharge.html">Recharge</a>
+      <a href="Report.html">Report issues</a>
+    </nav>
+  </div>
+  <div class="dropdown">
+    <button class="btn btn-profile" type="button" id="profileDropdown">
+      <i class="fas fa-user-circle fa-2x"></i>
+    </button>
+    <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="profileDropdown">
+      <li><a class="dropdown-item" href="#"><i class="fas fa-sign-in-alt me-2"></i>Login</a></li>
+      <li><a class="dropdown-item" href="#"><i class="fas fa-question-circle me-2"></i>Help</a></li>
+    </ul>
+  </div>
+</header>
+<!-- Hero Section -->
+<main class="container" id="home">
+  <div class="row align-items-center w-100">
+    <div class="col-md-6 text-md-start">
+      <span class="badge bg-danger mb-3">India's Fastest Recharge Platform</span>
+      <h1 class="display-4 fw-bold mb-3">Quick Mobile Recharge at Your Fingertips</h1>
+      <p class="lead text-muted mb-4">Experience lightning-fast recharges, exclusive offers, and secure payments - all in one place.</p>
+      <div class="d-flex gap-3">
+        <button class="btn btn-danger btn-lg" onclick="smoothScroll('mobileSection'); return false;">
+          Recharge <i class="fas fa-arrow-right ms-2"></i>
+        </button>
+        <button class="btn btn-outline-secondary btn-lg" onclick="window.location.href='Recharge.html'">
+          View Plans <i class="fas fa-list ms-2"></i>
+        </button>
+      </div>
+    </div>
+    <div class="col-md-6 d-flex justify-content-center">
+      <div class="iphone-mockup" id="mockupContainer">
+        <img src="/User/Assets/Images/interior.png" alt="iPhone mockup">
+        <div class="floating-label right" style="top: 30%; right: -20px;">
+          <i class="fas fa-bolt"></i> Instant Recharge
+        </div>
+        <div class="floating-label left" style="top: 40%; left: -20px;">
+          <i class="fas fa-shield-alt"></i> Secure Payment
+        </div>
+        <div class="floating-label right" style="top: 55%; right: -20px;">
+          <i class="fas fa-headset"></i> 24/7 Support
+        </div>
+      </div>
+    </div>
+  </div>
+</main>
+<!-- Mobile Input Section -->
+<section class="container mobile-input-section mt-5" id="mobileSection">
+  <div class="row">
+    <div class="col-md-6 col-12 text-center mb-4">
+      <img src="/User/Assets/Images/hand-drawn-people-talking-phone-illustration_23-2149917139.jpg" alt="Mobile Recharge" class="img-fluid" style="width: 320px; height: 320px;">
+    </div>
+    <div class="col-md-6 col-12 text-start">
+      <p class="h2 mb-1 fw-bold">Prepaid Mobile Recharge</p>
+      <p class="text-dark text-opacity-75">Instant prepaid recharge for validity, talktime, and data</p>
+      <div class="elements mt-4">
+        <p class="h5 m-1 fw-bold">Mobile Number</p>
+        <input type="text" class="form-control w-100" id="homeMobileNumber" placeholder="Enter your mobile number" maxlength="10">
+        <div id="mobileNumberError" class="text-danger mt-1" style="display: none;">Please enter a valid 10-digit mobile number.</div>
+        <div class="mt-3">
+          <button id="proceedBtn" class="btn btn-danger fw-bold rounded-pill px-4 py-2" type="button">Proceed</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+<!-- New SIM Section -->
+<section class="new-sim-section" id="newSimSection">
+  <div class="container">
+    <div class="row align-items-center">
+      <div class="col-md-6 col-12">
+        <img src="/User/Assets/Images/24899740051(1).png" alt="Scooty Delivery" class="img-fluid">
+      </div>
+      <div class="col-md-6 col-12">
+        <h2 class="display-4 fw-bold">Get Your New SIM</h2>
+        <p class="lead text-muted">Experience the next level of connectivity with our latest SIM card. Enjoy blazing-fast data, crystal-clear calls, and exclusive benefits just for you.</p>
+        <ul class="list-unstyled">
+          <li><i class="fas fa-shipping-fast text-danger me-2"></i> Fast 4G/5G Connectivity</li>
+          <li><i class="fas fa-bolt text-danger me-2"></i> Free Activation</li>
+          <li><i class="fas fa-headset text-danger me-2"></i> 24/7 Customer Support</li>
+          <li><i class="fas fa-lock text-danger me-2"></i> Secure and Easy Setup</li>
+        </ul>
+        <a href="New_sim.html"><button class="btn btn-danger btn-lg mt-4">Order Now</button></a>
+      </div>
+    </div>
+  </div>
+</section>
+<!-- Popular Plans Section -->
+<section class="plans-section" id="plans">
+  <div class="container">
+    <h2 class="text-center mb-5 display-4 fw-bold">Popular Plans</h2>
+    <div class="row g-4">
+      <div class="col-md-4 col-12">
+        <div class="plan-card">
+          <div class="popular-badge">Most Popular</div>
+          <h3>Starter Pack</h3>
+          <div class="price-tag">₹199</div>
+          <div class="validity">28 Days Validity</div>
+          <div class=" plan-features">
+            <div class="plan-feature">
+              <div class="feature-icon">
+                <i class="fas fa-database"></i>
+              </div>
+              <span>1.5GB/Day</span>
+            </div>
+            <div class="plan-feature">
+              <div class="feature-icon">
+                <i class="fas fa-phone-alt"></i>
+              </div>
+              <span>Unlimited Calls</span>
+            </div>
+            <div class="plan-feature">
+              <div class="feature-icon">
+                <i class="fas fa-sms"></i>
+              </div>
+              <span>100 SMS/Day</span>
+            </div>
+          </div>
+          <button class="btn btn-plan" onclick="scrollToMobileSection()">Choose Plan</button>
+        </div>
+      </div>
+      <div class="col-md-4 col-12">
+        <div class="plan-card">
+          <div class="popular-badge">Best Value</div>
+          <h3>Pro Pack</h3>
+          <div class="price-tag">₹299</div>
+          <div class="validity">56 Days Validity</div>
+          <div class="plan-features">
+            <div class="plan-feature">
+              <div class="feature-icon">
+                <i class="fas fa-database"></i>
+              </div>
+              <span>2GB/Day</span>
+            </div>
+            <div class="plan-feature">
+              <div class="feature-icon">
+                <i class="fas fa-phone-alt"></i>
+              </div>
+              <span>Unlimited Calls</span>
+            </div>
+            <div class="plan-feature">
+              <div class="feature-icon">
+                <i class="fas fa-sms"></i>
+              </div>
+              <span>300 SMS/Day</span>
+            </div>
+          </div>
+          <button class="btn btn-plan" onclick="scrollToMobileSection()">Choose Plan</button>
+        </div>
+      </div>
+      <div class="col-md-4 col-12">
+        <div class="plan-card">
+          <div class="popular-badge">Premium</div>
+          <h3>Ultimate Pack</h3>
+          <div class="price-tag">₹499</div>
+          <div class="validity">84 Days Validity</div>
+          <div class="plan-features">
+            <div class="plan-feature">
+              <div class="feature-icon">
+                <i class="fas fa-database"></i>
+              </div>
+              <span>3GB/Day</span>
+            </div>
+            <div class="plan-feature">
+              <div class="feature-icon">
+                <i class="fas fa-phone-alt"></i>
+              </div>
+              <span>Unlimited Calls</span>
+            </div>
+            <div class="plan-feature">
+              <div class="feature-icon">
+                <i class="fas fa-sms"></i>
+              </div>
+              <span>Unlimited SMS</span>
+            </div>
+          </div>
+          <button class="btn btn-plan" onclick="scrollToMobileSection()">Choose Plan</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+<!-- FAQ Section -->
+<section class="faq-section" id="faqSection">
+  <div class="container">
+    <h2 class="text-center display-4 fw-bold">Frequently Asked Questions</h2>
+    <div class="accordion mt-4" id="faqAccordion">
+      <div class="accordion-item">
+        <h2 class="accordion-header" id="headingOne">
+          <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#faq1" aria-expanded="false" aria-controls="faq1">
+            What is Mobi Comm?
+          </button>
+        </h2>
+        <div id="faq1" class="accordion-collapse collapse" aria-labelledby="headingOne" data-bs-parent="#faqAccordion">
+          <div class="accordion-body">
+            Mobi Comm is India's fastest mobile recharge platform offering instant recharges, exclusive plans, and secure transactions.
+          </div>
+        </div>
+      </div>
+      <div class="accordion-item">
+        <h2 class="accordion-header" id="headingTwo">
+          <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#faq2" aria-expanded="false" aria-controls="faq2">
+            How do I make a recharge?
+          </button>
+        </h2>
+        <div id="faq2" class="accordion-collapse collapse" aria-labelledby="headingTwo" data-bs-parent="#faqAccordion">
+          <div class="accordion-body">
+            Enter your 10-digit mobile number in the recharge section, select a plan, and proceed with the secure payment.
+          </div>
+        </div>
+      </div>
+      <div class="accordion-item">
+        <h2 class="accordion-header" id="headingThree">
+          <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#faq3" aria-expanded="false" aria-controls="faq3">
+            Are my payments secure?
+          </button>
+        </h2>
+        <div id="faq3" class="accordion-collapse collapse" aria-labelledby="headingThree" data-bs-parent="#faqAccordion">
+          <div class="accordion-body">
+            Yes, we use advanced encryption to ensure all transactions are safe and secure.
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+<footer class="bg-white py-5">
+  <div class="container">
+    <div class="row g-4">
+      <div class="col-md-6 col-lg-3">
+        <h5 class="fw-bold mb-3">About MobiComm</h5>
+        <p class="mb-3">Leading mobile recharge platform serving millions of users nationwide.</p>
+      </div>
+      <div class="col-md-6 col-lg-3">
+        <h5 class="fw-bold mb-3">Services</h5>
+        <ul class="list-unstyled">
+          <li class="mb-2"><a href="#" class="text-decoration-none text-dark">Prepaid Recharge</a></li>
+          <li class="mb-2"><a href="#" class="text-decoration-none text-dark">Postpaid Bill</a></li>
+          <li class="mb-2"><a href="#" class="text-decoration-none text-dark">Data Plans</a></li>
+          <li class="mb-2"><a href="#" class="text-decoration-none text-dark">International Packs</a></li>
+        </ul>
+      </div>
+      <div class="col-md-6 col-lg-3">
+        <h5 class="fw-bold mb-3">Support</h5>
+        <ul class="list-unstyled">
+          <li class="mb-2"><a href="#" class="text-decoration-none text-dark">FAQ</a></li>
+          <li class="mb-2"><a href="#" class="text-decoration-none text-dark">Contact Support</a></li>
+          <li class="mb-2"><a href="#" class="text-decoration-none text-dark">Privacy Policy</a></li>
+        </ul>
+      </div>
+      <div class="col-md-6 col-lg-3">
+        <h5 class="fw-bold mb-3">Connect</h5>
+        <div class="d-flex gap-3">
+          <a href="#" class="text-dark"><i class="fab fa-facebook fa-lg"></i></a>
+          <a href="#" class="text-dark"><i class="fab fa-twitter fa-lg"></i></a>
+          <a href="#" class="text-dark"><i class="fab fa-instagram fa-lg"></i></a>
+          <a href="#" class="text-dark"><i class="fab fa-linkedin fa-lg"></i></a>
+        </div>
+      </div>
+    </div>
+  </div>
+</footer>
+<div class="footer-image">
+  <img src="/User/Assets/Images/Footer.png" alt="Mobile recharge" class="img-fluid w-100" style="height: 250px; object-fit: cover; padding: 0 10px;">
+</div>
+<button id="scrollTopBtn"><i class="fas fa-chevron-up"></i></button>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+<script>
+  // Smooth scroll to a section
+  function smoothScroll(elementId) {
+    document.getElementById(elementId).scrollIntoView({ behavior: 'smooth' });
+  }
+  const mobileInput = document.getElementById('homeMobileNumber');
+  const errorDiv = document.getElementById('mobileNumberError');
+  mobileInput.addEventListener('input', (e) => {
+    e.target.value = e.target.value.replace(/\D/g, '');
+    if (e.target.value.length > 10) e.target.value = e.target.value.slice(0, 10);
+    errorDiv.style.display = (e.target.value.length > 0 && e.target.value.length !== 10) ? 'block' : 'none';
+  });
+  const params = new URLSearchParams(window.location.search);
+  const mobile = params.get('mobile');
+  if (mobile && /^\d{10}$/.test(mobile)) {
+    document.getElementById('rechargeMobileNumber').value = mobile;
+  }
+  document.getElementById('proceedBtn').addEventListener('click', function(){ const mobileNumber = mobileInput.value;
+  if (/^\d{10}$/.test(mobileNumber)) {
+    window.location.href = "Recharge.html?mobile=" + mobileNumber;
+  } else {
+    errorDiv.style.display = 'block';
+  }
+  });
+  function scrollToMobileSection() {
+    const mobileSection = document.getElementById('mobileSection');
+    mobileSection.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    mobileSection.classList.add('highlight');
+    setTimeout(() => mobileSection.classList.remove('highlight'), 1500);
+  }
+  window.addEventListener('scroll', () => {
+    const header = document.querySelector('header');
+    header.style.background = window.scrollY > 50 ? 'rgba(255, 255, 255, 0.98)' : 'rgba(255, 255, 255, 0.95)';
+    const scrollBtn = document.getElementById("scrollTopBtn");
+    scrollBtn.style.display = window.scrollY > 800 ? "block" : "none";
+  });
+  function slowScrollToTop(duration) {
+    const start = window.scrollY;
+    let startTime = null;
+    function animationStep(timestamp) {
+      if (!startTime) startTime = timestamp;
+      const progress = timestamp - startTime;
+      const percent = Math.min(progress / duration, 1);
+      const easeOut = 1 - Math.pow(1 - percent, 3);
+      window.scrollTo(0, start * (1 - easeOut));
+      if (progress < duration) window.requestAnimationFrame(animationStep);
+    }
+    window.requestAnimationFrame(animationStep);
+  }
+  document.getElementById("scrollTopBtn").addEventListener("click", function(){
+    slowScrollToTop(3000);
+  });
+</script>
+</body>
+</html>

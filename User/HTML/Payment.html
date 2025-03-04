@@ -1,0 +1,603 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8"/>
+  <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+  <title>Payment Methods</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css" rel="stylesheet"/>
+  <link href="css/recharge.min.css" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Baloo+Bhaijaan+2:wght@400;600;700&display=swap" rel="stylesheet" />
+  <style>
+    /* Global Styles */
+    html, body {
+      overflow-x: hidden;
+    }
+    :root {
+      --primary-color: #dc3545;
+      --text-color: #333;
+      --border-radius: 15px;
+      --shadow-color: rgba(0, 0, 0, 0.1);
+      --hover-transition: all 0.3s ease;
+    }
+    * {
+      font-family: 'Baloo Bhaijaan 2', sans-serif;
+    }
+    body {
+      background-color: #f9f3f3;
+      margin: 0;
+      padding: 0;
+      font-size: 1.1rem;
+      padding-top: 80px; /* For fixed header */
+    }
+    /* Header (same as Recharge page) */
+    header {
+      padding: 1rem 2rem;
+      background: #fff;
+      box-shadow: 0 0 10px rgba(0,0,0,0.1);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      position: fixed;
+      width: 100%;
+      top: 0;
+      z-index: 1000;
+      margin-bottom: 10px;
+    }
+    .brand-name {
+      font-size: 1.8rem;
+      font-weight: bold;
+      color: var(--primary-color);
+      margin-right: 1.5rem;
+      transition: all 0.3s ease;
+    }
+    .brand-name:hover {
+      transform: scale(1.1);
+      text-shadow: 0 0 15px rgba(220,53,69,0.3);
+    }
+    nav {
+      display: flex;
+      gap: 1rem;
+      align-items: center;
+    }
+    nav a {
+      color: var(--secondary-color);
+      text-decoration: none;
+      position: relative;
+      padding: 0.25rem 0;
+    }
+    nav a::after {
+      content: "";
+      position: absolute;
+      left: 50%;
+      bottom: 0;
+      width: 0;
+      height: 2px;
+      background: var(--primary-color);
+      transition: width 0.3s ease, left 0.3s ease;
+    }
+    nav a:hover::after {
+      width: 100%;
+      left: 0;
+    }
+    .btn-profile {
+      background: none;
+      border: none;
+      cursor: pointer;
+      padding: 0.5rem;
+    }
+    .dropdown:hover .dropdown-menu {
+      display: block !important;
+    }
+    .dropdown-menu {
+      right: 0;
+      left: auto;
+      max-width: 90vw;
+    }
+    .dropdown-menu a:hover {
+      background: var(--primary-color) !important;
+      color: #fff !important;
+    }
+    /* Payment Container */
+    .payment-container {
+      background-color: #F9F3F3;
+      width: 1020px;
+      height: 570px;
+      margin: 7% auto;
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+      border-radius: 10px;
+      overflow: hidden;
+    }
+    .payment-summary {
+      height: 570px;
+    }
+    /* Card Container & New Card Design */
+    .card-container {
+      background-color: #F9F3F3;
+      width: 100%;
+      max-width: 350px;
+      height: 240px;
+      transition: transform 0.6s;
+      transform-style: preserve-3d;
+      position: relative;
+      margin: 0 auto;
+      margin-top: 40px;
+    }
+    .card-container.flipped {
+      transform: rotateY(180deg);
+    }
+    /* Card Front: 70% red (primary color) at top and 30% white at bottom */
+    .card-front {
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      backface-visibility: hidden;
+      border-radius: 15px;
+      padding: 20px;
+      box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+      background: linear-gradient(to bottom, var(--primary-color) 70%, #ffffff 70%);
+      color: black;
+    }
+    .card-back {
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      backface-visibility: hidden;
+      border-radius: 15px;
+      padding: 20px;
+      box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+      background: white !important;
+      transform: rotateY(180deg);
+      color: black;
+    }
+    /* Make credit card input fields transparent and borderless */
+    .card-number,
+    .expiry-date,
+    .cvv {
+      background: transparent;
+      border: none;
+      outline: none;
+      box-shadow: none;
+      color: inherit;
+    }
+    /* Increase detail text sizes on the card front */
+    .bank-name,
+    .account-holder,
+    .card-type {
+      font-size: 1.2rem;
+      font-weight: bold;
+    }
+    /* Add realistic black stripe on the card back */
+    .card-back .black-strip {
+      background-color: black;
+      height: 40px;
+      width: 100%;
+      margin-bottom: 20px;
+      border-radius: 5px;
+    }
+    /* Style for the CVV container on card back */
+    .cvv-container {
+      text-align: right;
+      margin-right: 20px;
+    }
+    .chip {
+      width: 60px;
+      height: 45px;
+      margin-bottom: 15px;
+      overflow: hidden;
+    }
+    .chip img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+    /* Payment Methods Section */
+    .payment-section {
+      height: 150px;
+    }
+    .nav-tabs .nav-link {
+      border: none !important;
+      position: relative;
+      color: #495057 !important;
+      padding: 0.5rem 1.5rem !important;
+      transition: all 0.3s ease;
+    }
+    .nav-tabs .nav-link::after {
+      content: '';
+      position: absolute;
+      width: 0;
+      height: 2px;
+      bottom: 0;
+      left: 50%;
+      background: var(--primary-color);
+      transition: all 0.3s ease;
+    }
+    .nav-tabs .nav-link:hover::after,
+    .nav-tabs .nav-link.active::after {
+      width: 100%;
+      left: 0;
+    }
+    .payment-summary {
+      background-color: #de3a4a;
+      color: white;
+      padding: 2rem 2rem 1rem 2rem;
+    }
+    .payment-methods {
+      background-color: #F9F3F3;
+      padding: 2rem;
+      position: relative;
+    }
+    .plan-details {
+      padding: 1rem;
+      background: rgba(255, 255, 255, 0.1);
+      border-radius: 8px;
+      margin-top: 1.5rem;
+    }
+    .plan-feature {
+      display: flex;
+      justify-content: space-between;
+      margin-bottom: 0.75rem;
+    }
+    .auto-pay-section {
+      margin-top: 1.5rem;
+      padding-top: 1rem;
+      border-top: 1px solid rgba(255, 255, 255, 0.2);
+    }
+    .date-picker {
+      display: none;
+      margin-top: 0.5rem;
+      height: 50px;
+    }
+    .upi-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 10px;
+      margin-bottom: 20px;
+    }
+    .upi-app {
+      text-align: center;
+      padding: 10px;
+      border-radius: 15px;
+      cursor: pointer;
+      transition: transform 0.3s ease;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+      border: none !important;
+    }
+    .upi-app img {
+      width: 50px;
+      height: 50px;
+    }
+    .arrow-btn {
+      background: none;
+      border: none;
+      color: var(--primary-color);
+      font-size: 24px;
+      cursor: pointer;
+      position: absolute;
+      top: 50%;
+      transform: translateY(-50%);
+      z-index: 10;
+    }
+    .arrow-btn.left {
+      left: 40px;
+    }
+    .arrow-btn.right {
+      right: 40px;
+    }
+    #cardSection {
+      transition: margin-top 0.3s ease;
+      position: relative;
+    }
+    .btn-danger {
+      position: absolute;
+      bottom: 20px;
+      left: 2rem;
+      right: 2rem;
+      width: 100px;
+      border-radius: 15px;
+    }
+    /* Footer (same as Recharge page) */
+    footer {
+      margin-top: 80px;
+    }
+    footer .img-fluid {
+      height: 250px;
+      object-fit: cover;
+    }
+  </style>
+</head>
+<body>
+<!-- Header -->
+<header>
+  <div class="d-flex align-items-center">
+    <div class="brand-name fw-bold">Mobi Comm</div>
+  </div>
+</header>
+
+<!-- Payment Section -->
+<section>
+  <div class="payment-container">
+    <div class="row g-0">
+      <div class="col-md-4 payment-summary">
+        <h2 class="fw-bold">Billing Details</h2>
+        <div class="display-4 fw-bold mb-4" id="planPrice">₹599.00</div>
+        <div class="plan-details">
+          <h5>Plan Details <button class="btn btn-link p-0" onclick="window.location.href='Recharge.html'" style="color: blue"; >Change</button></h5>
+          <div class="plan-feature">
+            <span>Data:</span>
+            <span id="planData">2GB/day</span>
+          </div>
+          <div class="plan-feature">
+            <span>Validity:</span>
+            <span id="planValidity">28 Days</span>
+          </div>
+          <div class="plan-feature">
+            <span>Talktime:</span>
+            <span id="planCalls">Unlimited</span>
+          </div>
+          <div class="plan-feature">
+            <span>OTT Benefits:</span>
+            <span id="planOttBenefits">Prime Video</span>
+          </div>
+        </div>
+        <div class="auto-pay-section">
+          <div class="form-check">
+            <input class="form-check-input" type="checkbox" id="autoPay" onclick="toggleDatePicker()">
+            <label class="form-check-label" for="autoPay">
+              Enable Auto Pay
+            </label>
+          </div>
+          <div class="date-picker" id="datePicker">
+            <label class="form-label mt-2">Select Date:</label>
+            <input type="date" class="form-control" id="autoPayDate">
+          </div>
+        </div>
+        <hr class="border-white mb-4"/>
+      </div>
+      <div class="col-md-8 payment-methods">
+        <div class="d-flex justify-content-between align-items-center mb-4">
+          <h2 class="fw-bold">Payment Methods</h2>
+        </div>
+        <ul class="nav nav-tabs mb-4">
+          <li class="nav-item">
+            <button class="nav-link active" onclick="showCard()">Credit Card</button>
+          </li>
+          <li class="nav-item">
+            <button class="nav-link" onclick="showUPI()">UPI</button>
+          </li>
+          <li class="nav-item">
+            <button class="nav-link" onclick="showNetBanking()">Net Banking</button>
+          </li>
+        </ul>
+        <div id="upiSection" class="mb-4 payment-section d-none">
+          <div class="upi-grid">
+            <div class="upi-app" onclick="selectUPIApp('GPay')">
+              <img src="gpay.png" alt="GPay">
+            </div>
+            <div class="upi-app" onclick="selectUPIApp('Amazon Pay')">
+              <img src="amazonpay.png" alt="Amazon Pay">
+            </div>
+            <div class="upi-app" onclick="selectUPIApp('PhonePe')">
+              <img src="phonepe.png" alt="PhonePe">
+            </div>
+          </div>
+          <label for="upiId" class="form-label">Enter UPI ID:</label>
+          <input type="text" id="upiId" class="form-control" placeholder="example@upi">
+        </div>
+        <div id="netBankingSection" class="mb-4 payment-section d-none">
+          <div class="row row-cols-2 g-4">
+            <div class="col">
+              <img src="bank1.png" alt="Bank 1" class="bank-icon" onclick="selectBank('Bank 1')">
+            </div>
+            <div class="col">
+              <img src="bank2.png" alt="Bank 2" class="bank-icon" onclick="selectBank('Bank 2')">
+            </div>
+            <div class="col">
+              <img src="bank3.png" alt="Bank 3" class="bank-icon" onclick="selectBank('Bank 3')">
+            </div>
+            <div class="col">
+              <img src="bank4.png" alt="Bank 4" class="bank-icon" onclick="selectBank('Bank 4')">
+            </div>
+          </div>
+          <button class="btn btn-primary mt-4">More Options</button>
+        </div>
+        <div id="cardSection" class="mb-4 position-relative">
+          <button class="arrow-btn left" onclick="flipCard('left')">&#10094;</button>
+          <button class="arrow-btn right" onclick="flipCard('right')">&#10095;</button>
+          <div class="card-container" id="card">
+            <div class="card-front">
+              <div class="chip">
+                <img src="/USER/Assests/Images/Credit_card_Chip.png" alt="Card Chip">
+              </div>
+              <div id="bankName" class="bank-name"></div>
+              <input type="text" id="cardNumber" class="card-number"
+                     placeholder="XXXX XXXX XXXX XXXX" maxlength="19"
+                     oninput="formatCardNumber()">
+              <input type="text" id="expiryDate" class="expiry-date"
+                     placeholder="MM/YY" maxlength="5"
+                     oninput="formatExpiryDate()">
+              <div id="accountHolder" class="account-holder"></div>
+              <div id="cardType" class="card-type"></div>
+            </div>
+            <div class="card-back">
+              <div class="black-strip"></div>
+              <div class="cvv-container">
+                <div class="text-dark small mb-1">CVV</div>
+                <input type="password" id="cvv" class="cvv" placeholder="XXX" maxlength="3" style="width: 50px;">
+              </div>
+            </div>
+          </div>
+        </div>
+        <button class="btn btn-danger py-3 fs-5 fw-bold">
+          Pay
+        </button>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Footer (same as Recharge page) -->
+<footer class="bg-white py-5">
+  <div class="container">
+    <div class="row g-4">
+      <div class="col-md-6 col-lg-3">
+        <h5 class="fw-bold mb-3">About MobiComm</h5>
+        <p class="mb-3">Leading mobile recharge platform serving millions of users nationwide.</p>
+      </div>
+      <div class="col-md-6 col-lg-3">
+        <h5 class="fw-bold mb-3">Services</h5>
+        <ul class="list-unstyled">
+          <li class="mb-2"><a href="#" class="text-decoration-none text-dark">Prepaid Recharge</a></li>
+          <li class="mb-2"><a href="#" class="text-decoration-none text-dark">Postpaid Bill</a></li>
+          <li class="mb-2"><a href="#" class="text-decoration-none text-dark">Data Plans</a></li>
+          <li class="mb-2"><a href="#" class="text-decoration-none text-dark">International Packs</a></li>
+        </ul>
+      </div>
+      <div class="col-md-6 col-lg-3">
+        <h5 class="fw-bold mb-3">Support</h5>
+        <ul class="list-unstyled">
+          <li class="mb-2"><a href="#" class="text-decoration-none text-dark">FAQ</a></li>
+          <li class="mb-2"><a href="#" class="text-decoration-none text-dark">Contact Support</a></li>
+          <li class="mb-2"><a href="#" class="text-decoration-none text-dark">Privacy Policy</a></li>
+        </ul>
+      </div>
+      <div class="col-md-6 col-lg-3">
+        <h5 class="fw-bold mb-3">Connect</h5>
+        <div class="d-flex gap-3">
+          <a href="#" class="text-dark"><i class="fab fa-facebook fa-lg"></i></a>
+          <a href="#" class="text-dark"><i class="fab fa-twitter fa-lg"></i></a>
+          <a href="#" class="text-dark"><i class="fab fa-instagram fa-lg"></i></a>
+          <a href="#" class="text-dark"><i class="fab fa-linkedin fa-lg"></i></a>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="footer-image">
+    <img src="/USER/Assests/Images/Footer.png" alt="Mobile recharge" class="img-fluid w-100" style="height: 250px; object-fit: cover; padding: 0 10px">
+  </div>
+</footer>
+
+<!-- Toast Notification -->
+<div id="toast" class="toast align-items-center text-white bg-success border-0" role="alert" aria-live="assertive" aria-atomic="true" style="position: fixed; bottom: 20px; right: 20px">
+  <div class="d-flex">
+    <div class="toast-body">Mobile number updated successfully!</div>
+    <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast" aria-label="Close"></button>
+  </div>
+</div>
+
+<!-- Scripts -->
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.min.js"></script>
+<script>
+  // Utility functions for mobile number validation and toast notification
+  function updateNumber() {
+    const mobileInput = document.getElementById("rechargeMobileNumber");
+    const newNumber = mobileInput.value.trim();
+    if(newNumber.length === 10) {
+      localStorage.setItem("mobileNumber", newNumber);
+      showToast();
+    } else {
+      alert("Please enter a valid 10-digit mobile number.");
+    }
+  }
+  function showToast() {
+    const toast = new bootstrap.Toast(document.getElementById("toast"));
+    toast.show();
+  }
+  function validateNumber(input) {
+    input.value = input.value.replace(/\D/g, "");
+  }
+  function isNumberKey(event) {
+    const charCode = event.which ? event.which : event.keyCode;
+    return charCode >= 48 && charCode <= 57;
+  }
+  // Functions for flipping and formatting the credit card
+  function flipCard(direction = 'right') {
+    const card = document.getElementById("card");
+    card.classList.toggle("flipped");
+  }
+  function formatCardNumber() {
+    let input = document.getElementById("cardNumber");
+    let value = input.value.replace(/\D/g, "").substring(0, 16);
+    let formatted = value.replace(/(\d{4})(?=\d)/g, "$1 ");
+    input.value = formatted.trim();
+    if (value.length === 16) {
+      showCardDetails();
+    } else {
+      clearCardDetails();
+    }
+  }
+  function clearCardDetails() {
+    document.getElementById("bankName").innerText = "";
+    document.getElementById("accountHolder").innerText = "";
+    document.getElementById("cardType").innerText = "";
+  }
+  function formatExpiryDate() {
+    let input = document.getElementById("expiryDate");
+    let value = input.value.replace(/\D/g, "").substring(0, 4);
+    if (value.length >= 2) {
+      value = value.slice(0, 2) + '/' + value.slice(2, 4);
+    }
+    input.value = value;
+  }
+  function showCardDetails() {
+    document.getElementById("bankName").innerText = "Kotak Mahindra Bank";
+    document.getElementById("accountHolder").innerText = "Poornesh";
+    document.getElementById("cardType").innerText = "Visa";
+  }
+  // Functions to toggle payment methods sections
+  function showUPI() {
+    document.getElementById("upiSection").classList.remove("d-none");
+    document.getElementById("netBankingSection").classList.add("d-none");
+    document.getElementById("cardSection").classList.add("d-none");
+  }
+  function showNetBanking() {
+    document.getElementById("netBankingSection").classList.remove("d-none");
+    document.getElementById("upiSection").classList.add("d-none");
+    document.getElementById("cardSection").classList.add("d-none");
+  }
+  function showCard() {
+    document.getElementById("cardSection").classList.remove("d-none");
+    document.getElementById("upiSection").classList.add("d-none");
+    document.getElementById("netBankingSection").classList.add("d-none");
+  }
+  function selectBank(bankName) {
+    document.getElementById("bankName").innerText = bankName;
+    showCard();
+  }
+  function selectUPIApp(appName) {
+    alert(`Selected ${appName}`);
+  }
+  // Read plan details from URL query parameters and update billing details
+  document.addEventListener("DOMContentLoaded", () => {
+    const params = new URLSearchParams(window.location.search);
+    const price = params.get('price');
+    const data = params.get('data');
+    const validity = params.get('validity');
+    const calls = params.get('calls');
+    const ottBenefits = params.get('ottBenefits');
+
+    if (price) {
+      document.getElementById('planPrice').textContent = `₹${price}`;
+    }
+    if (data) {
+      document.getElementById('planData').textContent = data;
+    }
+    if (validity) {
+      document.getElementById('planValidity').textContent = validity;
+    }
+    if (calls) {
+      document.getElementById('planCalls').textContent = calls;
+    }
+    if (ottBenefits) {
+      document.getElementById('planOttBenefits').textContent = ottBenefits;
+    }
+
+    const storedNumber = localStorage.getItem("mobileNumber");
+    if(storedNumber) {
+      document.getElementById("rechargeMobileNumber").value = storedNumber;
+    }
+  });
+</script>
+</body>
+</html>

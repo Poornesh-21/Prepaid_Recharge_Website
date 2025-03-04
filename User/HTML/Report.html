@@ -1,0 +1,728 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Mobi Comm - Report Issue</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+  <link href="https://fonts.googleapis.com/css2?family=Baloo+Bhaijaan+2:wght@400;600;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --primary-color: #dc3545;
+      --secondary-color: #6c757d;
+      --background-color: #F9F3F3;
+      --text-color: #333;
+    }
+
+    body {
+      font-family: 'Baloo Bhaijaan 2', sans-serif;
+      height: 100vh;
+      background-color: var(--background-color);
+    }
+
+    /* Header Styles */
+    header {
+      padding: 1rem 2rem;
+      background-color: #fff;
+      box-shadow: 0 0 10px rgba(0,0,0,0.1);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      position: fixed;
+      width: 100%;
+      z-index: 1000;
+    }
+
+    .brand-name {
+      font-size: 1.8rem;
+      font-weight: bold;
+      color: var(--primary-color);
+      margin-right: 1.5rem;
+      transition: all 0.3s ease;
+    }
+
+    .brand-name:hover {
+      transform: scale(1.1);
+      text-shadow: 0 0 15px rgba(220, 53, 69, 0.3);
+    }
+
+    nav {
+      display: flex;
+      gap: 1rem;
+      align-items: center;
+    }
+
+    nav a {
+      color: var(--secondary-color);
+      text-decoration: none;
+      position: relative;
+      padding: 0.25rem 0;
+    }
+
+    nav a::after {
+      content: "";
+      position: absolute;
+      left: 50%;
+      bottom: 0;
+      width: 0;
+      height: 2px;
+      background: var(--primary-color);
+      transition: width 0.3s ease, left 0.3s ease;
+    }
+
+    nav a:hover::after {
+      width: 100%;
+      left: 0;
+    }
+
+    /* Dropdown */
+    .dropdown:hover .dropdown-menu {
+      display: block;
+    }
+
+    .dropdown-menu {
+      margin-top: 0;
+      border: none;
+      box-shadow: 0 0 10px rgba(0,0,0,0.1);
+      right: 0;
+      left: auto;
+    }
+
+    .dropdown-menu .dropdown-item {
+      transition: background-color 0.3s ease;
+      font-size: 1.1rem;
+    }
+
+    .dropdown-menu .dropdown-item:hover {
+      background-color: var(--primary-color);
+      color: #fff;
+    }
+
+    .btn-profile {
+      background: none;
+      border: none;
+      cursor: pointer;
+    }
+
+    /* Contact Container */
+    .contact-container {
+      height: 100vh;
+      padding: 80px 0 20px;
+    }
+
+    .contact-heading {
+      color: #dc3545;
+      font-size: 16px;
+      font-weight: 600;
+      margin-bottom: 10px;
+      animation: fadeInUp 0.8s ease-out;
+    }
+
+    .contact-title {
+      font-size: 32px;
+      font-weight: 700;
+      margin-bottom: 15px;
+      line-height: 1.2;
+      animation: fadeInUp 1s ease-out;
+    }
+
+    .contact-text {
+      color: #555;
+      margin-bottom: 20px;
+      font-size: 14px;
+      animation: fadeInUp 1.2s ease-out;
+    }
+
+    .contact-form label {
+      font-weight: 500;
+      margin-bottom: 5px;
+      font-size: 14px;
+    }
+
+    .form-control {
+      padding: 8px 12px;
+      border-radius: 4px;
+      border: 1px solid #dee2e6;
+      margin-bottom: 15px;
+      font-size: 14px;
+      transition: all 0.3s ease;
+    }
+
+    .form-control:focus {
+      border-color: #dc3545;
+      box-shadow: 0 0 0 0.2rem rgba(220, 53, 69, 0.25);
+    }
+
+    .form-control::placeholder {
+      color: #adb5bd;
+    }
+
+    .contact-image-container {
+      background-color: #ffe0e3;
+      border-radius: 20px;
+      overflow: hidden;
+      height: 250px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      position: relative;
+      animation: fadeIn 1.5s ease-out;
+      margin-bottom: 15px;
+    }
+
+    .contact-image {
+      max-width: 80%;
+      max-height: 200px;
+      object-fit: cover;
+      animation: pulse 3s infinite;
+    }
+
+    .pulse-circle {
+      position: absolute;
+      width: 150px;
+      height: 150px;
+      border-radius: 50%;
+      background-color: rgba(220, 53, 69, 0.1);
+      animation: ripple 3s infinite;
+    }
+
+    .contact-info {
+      background-color: white;
+      border-radius: 10px;
+      padding: 15px;
+      box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+      animation: slideInRight 1s ease-out;
+      border-left: 4px solid #dc3545;
+    }
+
+    .contact-info-icon {
+      background-color: #ffe0e3;
+      width: 40px;
+      height: 40px;
+      border-radius: 10px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-right: 15px;
+    }
+
+    .contact-info-icon svg {
+      color: #dc3545;
+    }
+
+    .contact-info-text h5 {
+      font-weight: 600;
+      margin-bottom: 2px;
+      font-size: 14px;
+    }
+
+    .contact-info-text p {
+      color: #555;
+      margin-bottom: 0;
+      font-size: 14px;
+    }
+
+    .form-check {
+      margin-top: 5px;
+    }
+
+    .form-check-label {
+      color: #555;
+      font-size: 12px;
+    }
+
+    .form-check-input:checked {
+      background-color: #dc3545;
+      border-color: #dc3545;
+    }
+
+    .form-check-label a {
+      color: #dc3545;
+      text-decoration: none;
+    }
+
+    .submit-btn {
+      background-color: #dc3545;
+      border: none;
+      padding: 8px 16px;
+      border-radius: 4px;
+      color: white;
+      font-weight: 500;
+      margin-top: 10px;
+      transition: all 0.3s ease;
+      animation: fadeInUp 1.4s ease-out;
+    }
+
+    .submit-btn:hover {
+      background-color: #c82333;
+      transform: translateY(-2px);
+    }
+
+    .issue-category {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+      margin-bottom: 15px;
+    }
+
+    .issue-option {
+      background-color: white;
+      border: 1px solid #dee2e6;
+      border-radius: 4px;
+      padding: 8px 15px;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      animation: fadeIn 1.5s ease-out;
+    }
+
+    .issue-option:hover {
+      border-color: #dc3545;
+    }
+
+    .issue-option.active {
+      background-color: #ffe0e3;
+      border-color: #dc3545;
+      color: #dc3545;
+      font-weight: 500;
+    }
+
+    .select-priority {
+      display: flex;
+      gap: 10px;
+      margin-bottom: 15px;
+    }
+
+    .priority-option {
+      border: 1px solid #dee2e6;
+      border-radius: 4px;
+      padding: 8px 12px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      background-color: white;
+    }
+
+    .priority-option:hover {
+      border-color: #dc3545;
+    }
+
+    .priority-option.active {
+      border-color: #dc3545;
+      background-color: #ffe0e3;
+      color: #dc3545;
+    }
+
+    .priority-option i {
+      margin-right: 5px;
+    }
+
+    /* Footer */
+    footer {
+      background-color: white;
+      padding: 3rem 0;
+    }
+
+    footer h5 {
+      font-weight: bold;
+      margin-bottom: 1.5rem;
+    }
+
+    footer ul {
+      padding-left: 0;
+    }
+
+    footer li {
+      margin-bottom: 0.75rem;
+    }
+
+    footer a {
+      color: var(--secondary-color);
+      text-decoration: none;
+      transition: color 0.3s ease;
+    }
+
+    footer a:hover {
+      color: var(--primary-color);
+    }
+
+    footer .social-icons {
+      display: flex;
+      gap: 1rem;
+    }
+
+    footer .social-icons a {
+      font-size: 1.2rem;
+    }
+
+    /* Scroll-to-Top Button */
+    #scrollTopBtn {
+      display: none;
+      position: fixed;
+      bottom: 30px;
+      right: 30px;
+      background: var(--primary-color);
+      color: white;
+      border: none;
+      border-radius: 50%;
+      width: 50px;
+      height: 50px;
+      font-size: 1.5rem;
+      cursor: pointer;
+      z-index: 1001;
+    }
+
+    /* Animations */
+    @keyframes fadeInUp {
+      from {
+        opacity: 0;
+        transform: translateY(20px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    @keyframes fadeIn {
+      from {
+        opacity: 0;
+      }
+      to {
+        opacity: 1;
+      }
+    }
+
+    @keyframes slideInRight {
+      from {
+        transform: translateX(20px);
+        opacity: 0;
+      }
+      to {
+        transform: translateX(0);
+        opacity: 1;
+      }
+    }
+
+    @keyframes pulse {
+      0% {
+        transform: scale(1);
+      }
+      50% {
+        transform: scale(1.03);
+      }
+      100% {
+        transform: scale(1);
+      }
+    }
+
+    @keyframes ripple {
+      0% {
+        transform: scale(0.8);
+        opacity: 0.8;
+      }
+      50% {
+        transform: scale(1);
+        opacity: 0.4;
+      }
+      100% {
+        transform: scale(0.8);
+        opacity: 0.8;
+      }
+    }
+
+    .form-item {
+      animation-duration: 0.7s;
+      animation-name: fadeInUp;
+      animation-fill-mode: both;
+    }
+
+    .form-item:nth-child(1) {
+      animation-delay: 0.3s;
+    }
+
+    .form-item:nth-child(2) {
+      animation-delay: 0.5s;
+    }
+
+    .form-item:nth-child(3) {
+      animation-delay: 0.7s;
+    }
+
+    .form-item:nth-child(4) {
+      animation-delay: 0.9s;
+    }
+
+    .custom-file-upload {
+      border: 1px dashed #dee2e6;
+      border-radius: 4px;
+      padding: 15px;
+      text-align: center;
+      margin-bottom: 15px;
+      cursor: pointer;
+      transition: all 0.3s ease;
+    }
+
+    .custom-file-upload:hover {
+      border-color: #dc3545;
+      background-color: #ffe0e3;
+    }
+
+    .custom-file-upload i {
+      font-size: 24px;
+      color: #6c757d;
+      margin-bottom: 10px;
+    }
+
+    #fileInput {
+      display: none;
+    }
+
+    .ticket-status {
+      margin-top: 15px;
+      animation: fadeInUp 1.6s ease-out;
+    }
+
+    .progress-container {
+      height: 8px;
+      width: 100%;
+      background-color: #e9ecef;
+      border-radius: 4px;
+      margin: 10px 0;
+      overflow: hidden;
+    }
+
+    .progress-bar {
+      height: 100%;
+      width: 0;
+      background-color: #dc3545;
+      transition: width 0.5s ease;
+    }
+
+    .ticket-message {
+      font-size: 12px;
+      color: #6c757d;
+    }
+  </style>
+</head>
+<body>
+<!-- Header -->
+<header>
+  <div class="d-flex align-items-center">
+    <div class="brand-name">Mobi Comm</div>
+    <nav>
+      <a href="Home.html">Home</a>
+      <a href="New_Sim.html">New Connection</a>
+      <a href="Recharge.html">Recharge</a>
+      <a href="Report.html">Report issues</a>
+    </nav>
+  </div>
+  <div class="dropdown">
+    <button class="btn btn-profile" type="button" id="profileDropdown">
+      <i class="fas fa-user-circle fa-2x"></i>
+    </button>
+    <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="profileDropdown">
+      <li><a class="dropdown-item" href="#"><i class="fas fa-sign-in-alt me-2"></i>Login</a></li>
+      <li><a class="dropdown-item" href="#"><i class="fas fa-question-circle me-2"></i>Help</a></li>
+    </ul>
+  </div>
+</header>
+
+<!-- Report Issue Section -->
+<section class="contact-container" id="report-issue">
+  <div class="container h-100">
+    <div class="row h-100">
+      <!-- Report Form -->
+      <div class="col-lg-6 pe-lg-5 d-flex flex-column justify-content-center">
+        <div class="contact-heading">Customer Support</div>
+        <h1 class="contact-title">Report an Issue</h1>
+        <p class="contact-text">Let us know about any problems you're experiencing. Our support team will help resolve your issue promptly.</p>
+
+        <form class="contact-form">
+          <div class="form-item">
+            <label for="mobileNumber">Mobile Number</label>
+            <input type="tel" class="form-control" id="mobileNumber" placeholder="Enter 10-digit mobile number">
+          </div>
+
+          <div class="form-item">
+            <label>Issue Category</label>
+            <div class="issue-category">
+              <div class="issue-option">Network</div>
+              <div class="issue-option">Billing</div>
+              <div class="issue-option active">Recharge</div>
+              <div class="issue-option">Service</div>
+              <div class="issue-option">Other</div>
+            </div>
+          </div>
+
+          <div class="form-item">
+            <label for="issueDescription">Issue Description</label>
+            <textarea class="form-control" id="issueDescription" rows="3" placeholder="Please describe your issue in detail..."></textarea>
+          </div>
+
+
+          <div class="form-item">
+            <label>Attach Screenshot (Optional)</label>
+            <label for="fileInput" class="custom-file-upload">
+              <i class="fas fa-file-upload d-block"></i>
+              <span>Drop files here or click to upload</span>
+            </label>
+            <input type="file" id="fileInput" accept="image/*">
+          </div>
+
+          <div class="form-check form-item">
+            <input class="form-check-input" type="checkbox" id="agreeTerms">
+            <label class="form-check-label" for="agreeTerms">
+              I agree to the <a href="#">terms and privacy policy</a>
+            </label>
+          </div>
+
+          <button type="submit" class="submit-btn">Submit Issue Report</button>
+        </form>
+      </div>
+
+      <!-- Support Image and Info -->
+      <div class="col-lg-6 position-relative d-flex flex-column justify-content-center">
+        <div class="contact-image-container">
+
+          <img class="contact-image" src="/User/Assets/Images/flat-design-illustration-customer-support_23-2148887720.jpeg" alt="Customer support illustration">
+        </div>
+
+        <div class="contact-info">
+          <div class="d-flex mb-2">
+            <div class="contact-info-icon">
+              <i class="fas fa-headset"></i>
+            </div>
+            <div class="contact-info-text">
+              <h5>24/7 Customer Support</h5>
+              <p>(0252) 8324 9231</p>
+            </div>
+          </div>
+
+          <div class="d-flex">
+            <div class="contact-info-icon">
+              <i class="fas fa-comments"></i>
+            </div>
+            <div class="contact-info-text">
+              <h5>Live Chat</h5>
+              <p>Available 9AM - 8PM</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+<!-- Footer -->
+<footer class="bg-white py-5 mt-5" id="contact">
+  <div class="container">
+    <div class="row g-4">
+      <div class="col-md-6 col-lg-3">
+        <h5 class="fw-bold mb-3">About Mobi Comm</h5>
+        <p class="mb-3">Leading mobile service provider committed to excellent customer support and service quality.</p>
+      </div>
+      <div class="col-md-6 col-lg-3">
+        <h5 class="fw-bold mb-3">Services</h5>
+        <ul class="list-unstyled">
+          <li class="mb-2"><a href="#" class="text-decoration-none text-dark">Prepaid Recharge</a></li>
+          <li class="mb-2"><a href="#" class="text-decoration-none text-dark">Postpaid Bill</a></li>
+          <li class="mb-2"><a href="#" class="text-decoration-none text-dark">Data Plans</a></li>
+          <li class="mb-2"><a href="#" class="text-decoration-none text-dark">International Packs</a></li>
+        </ul>
+      </div>
+      <div class="col-md-6 col-lg-3">
+        <h5 class="fw-bold mb-3">Support</h5>
+        <ul class="list-unstyled">
+          <li class="mb-2"><a href="#" class="text-decoration-none text-dark">FAQ</a></li>
+          <li class="mb-2"><a href="#" class="text-decoration-none text-dark">Contact Support</a></li>
+          <li class="mb-2"><a href="#" class="text-decoration-none text-dark">Privacy Policy</a></li>
+        </ul>
+      </div>
+      <div class="col-md-6 col-lg-3">
+        <h5 class="fw-bold mb-3">Connect</h5>
+        <div class="d-flex gap-3">
+          <a href="#" class="text-dark"><i class="fab fa-facebook fa-lg"></i></a>
+          <a href="#" class="text-dark"><i class="fab fa-twitter fa-lg"></i></a>
+          <a href="#" class="text-dark"><i class="fab fa-instagram fa-lg"></i></a>
+          <a href="#" class="text-dark"><i class="fab fa-linkedin fa-lg"></i></a>
+        </div>
+      </div>
+    </div>
+  </div>
+</footer>
+
+<!-- Footer Image -->
+<div class="footer-image">
+  <img src="/api/placeholder/800/200" alt="Customer support" class="img-fluid w-100" style="height: 250px; object-fit: cover; padding: 0 10px;">
+</div>
+
+<!-- Scroll to Top Button -->
+<button id="scrollTopBtn"><i class="fas fa-chevron-up"></i></button>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
+<script>
+  // Mobile number validation
+  const mobileInput = document.getElementById('mobileNumber');
+  mobileInput.addEventListener('input', (e) => {
+    const value = e.target.value;
+    if (value && !/^\d{10}$/.test(value)) {
+      mobileInput.classList.add('is-invalid');
+    } else {
+      mobileInput.classList.remove('is-invalid');
+    }
+  });
+
+  // Issue category selection
+  const issueOptions = document.querySelectorAll('.issue-option');
+  issueOptions.forEach(option => {
+    option.addEventListener('click', () => {
+      issueOptions.forEach(o => o.classList.remove('active'));
+      option.classList.add('active');
+    });
+  });
+
+  // Priority selection
+  const priorityOptions = document.querySelectorAll('.priority-option');
+  priorityOptions.forEach(option => {
+    option.addEventListener('click', () => {
+      priorityOptions.forEach(o => o.classList.remove('active'));
+      option.classList.add('active');
+    });
+  });
+
+  // File upload
+  const fileInput = document.getElementById('fileInput');
+  const fileUpload = document.querySelector('.custom-file-upload');
+
+  fileInput.addEventListener('change', function() {
+    if (this.files && this.files[0]) {
+      const fileName = this.files[0].name;
+      fileUpload.querySelector('span').textContent = fileName;
+      fileUpload.style.backgroundColor = '#ffe0e3';
+      fileUpload.style.borderColor = '#dc3545';
+    }
+  });
+
+  // Scroll to top button
+  window.addEventListener('scroll', () => {
+    const scrollBtn = document.getElementById("scrollTopBtn");
+    if(window.scrollY > 300){
+      scrollBtn.style.display = "block";
+    } else {
+      scrollBtn.style.display = "none";
+    }
+  });
+
+  document.getElementById("scrollTopBtn").addEventListener("click", function(){
+    window.scrollTo({
+      top: 0,
+      behavior: "smooth"
+    });
+  });
+</script>
+</body>
+</html>

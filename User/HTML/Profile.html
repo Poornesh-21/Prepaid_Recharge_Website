@@ -1,0 +1,432 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Mobicomm</title>
+  <!-- Bootstrap CSS -->
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/css/bootstrap.min.css" rel="stylesheet">
+  <!-- Font Awesome for icons -->
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+  <style>
+    body {
+      background-color: #f8f9fa;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    }
+
+    header {
+      padding: 1rem 2rem;
+      background-color: #fff;
+      box-shadow: 0 0 10px rgba(0,0,0,0.1);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      position: fixed;
+      width: 100%;
+      z-index: 1000;
+    }
+
+    .brand-name {
+      font-size: 1.8rem;
+      font-weight: bold;
+      color: var(--primary-color);
+      margin-right: 1.5rem;
+      transition: all 0.3s ease;
+    }
+
+    .brand-name:hover {
+      transform: scale(1.1);
+      text-shadow: 0 0 15px rgba(220, 53, 69, 0.3);
+    }
+
+    nav {
+      display: flex;
+      gap: 1rem;
+      align-items: center;
+    }
+
+    nav a {
+      color: var(--secondary-color);
+      text-decoration: none;
+      position: relative;
+      padding: 0.25rem 0;
+    }
+
+    nav a::after {
+      content: "";
+      position: absolute;
+      left: 50%;
+      bottom: 0;
+      width: 0;
+      height: 2px;
+      background: var(--primary-color);
+      transition: width 0.3s ease, left 0.3s ease;
+    }
+
+    nav a:hover::after {
+      width: 100%;
+      left: 0;
+    }
+
+    /* Dropdown */
+    .dropdown:hover .dropdown-menu {
+      display: block;
+    }
+
+    .dropdown-menu {
+      margin-top: 0;
+      border: none;
+      box-shadow: 0 0 10px rgba(0,0,0,0.1);
+      right: 0;
+      left: auto;
+    }
+
+    .dropdown-menu .dropdown-item {
+      transition: background-color 0.3s ease;
+      font-size: 1.1rem;
+    }
+
+    .dropdown-menu .dropdown-item:hover {
+      background-color: var(--primary-color);
+      color: #fff;
+    }
+
+    .btn-profile {
+      background: none;
+      border: none;
+      cursor: pointer;
+    }
+    .profile-card {
+      border-radius: 15px;
+      box-shadow: 0 10px 20px rgba(220, 53, 69, 0.2);
+      overflow: hidden;
+    }
+    .profile-header {
+      height: 120px;
+      background: linear-gradient(135deg, #dc3545 0%, #FF6B81 100%);
+    }
+    .profile-picture-container {
+      position: relative;
+      margin-top: -60px;
+      margin-bottom: 20px;
+    }
+    .profile-picture {
+      width: 120px;
+      height: 120px;
+      border-radius: 50%;
+      border: 5px solid white;
+      object-fit: cover;
+      box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+    }
+    .edit-profile-pic {
+      position: absolute;
+      bottom: 0;
+      right: 0;
+      background-color: #dc3545;
+      color: white;
+      width: 35px;
+      height: 35px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      box-shadow: 0 3px 10px rgba(0, 0, 0, 0.2);
+    }
+    .form-floating input:focus {
+      border-color: #dc3545;
+      box-shadow: 0 0 0 0.25rem rgba(220, 53, 69, 0.25);
+    }
+    .form-floating label {
+      color: #6c757d;
+    }
+    .data-usage-card {
+      background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+      border-radius: 12px;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+      height: 100%;
+    }
+    .data-progress {
+      height: 12px;
+      border-radius: 6px;
+    }
+    .plan-badge {
+      background-color: #dc3545;
+      color: white;
+      font-weight: 600;
+      padding: 8px 15px;
+      border-radius: 20px;
+    }
+    .transaction-card {
+      transition: transform 0.2s;
+    }
+    .transaction-card:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+    }
+    .btn-danger-soft {
+      background-color: rgba(220, 53, 69, 0.1);
+      color: #dc3545;
+      border: none;
+    }
+    .btn-danger-soft:hover {
+      background-color: rgba(220, 53, 69, 0.2);
+      color: #dc3545;
+    }
+    .unlimited-badge {
+      background: linear-gradient(135deg, #28a745 0%, #20c997 100%);
+      color: white;
+      padding: 4px 10px;
+      border-radius: 12px;
+      font-size: 12px;
+      font-weight: 600;
+    }
+  </style>
+</head>
+<body>
+
+<header>
+  <div class="d-flex align-items-center">
+    <div class="brand-name">Mobi Comm</div>
+    <nav>
+      <a href="Home.html">Home</a>
+      <a href="New_Sim.html">New Connection</a>
+      <a href="Recharge.html">Recharge</a>
+      <a href="Report.html">Report issues</a>
+    </nav>
+  </div>
+  <div class="dropdown">
+    <button class="btn btn-profile" type="button" id="profileDropdown">
+      <i class="fas fa-user-circle fa-2x"></i>
+    </button>
+    <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="profileDropdown">
+      <li><a class="dropdown-item" href="#"><i class="fas fa-sign-in-alt me-2"></i>Login</a></li>
+      <li><a class="dropdown-item" href="#"><i class="fas fa-question-circle me-2"></i>Help</a></li>
+    </ul>
+  </div>
+</header>
+
+<div class="container py-5 pt-5 px-5">
+  <div class="row">
+    <div class="col-12 mb-4">
+
+    </div>
+
+    <!-- Profile Card -->
+    <div class="col-lg-8 mx-auto mb-4">
+      <div class="profile-card bg-white p-0">
+        <!-- Profile Header -->
+        <div class="profile-header"></div>
+
+        <div class="px-4 pb-4">
+          <!-- Profile Picture -->
+          <div class="d-flex flex-column align-items-center">
+            <div class="profile-picture-container">
+              <img src="/api/placeholder/120/120" alt="Profile Picture" class="profile-picture">
+              <div class="edit-profile-pic">
+                <i class="fas fa-camera"></i>
+              </div>
+            </div>
+          </div>
+
+          <!-- Profile Information -->
+          <div class="row g-3 mb-4">
+            <div class="col-md-12">
+              <div class="form-floating">
+                <input type="text" class="form-control" id="fullName" placeholder="Full Name" value="Poornesh">
+                <label for="fullName">Full Name</label>
+              </div>
+            </div>
+            <div class="col-md-6">
+              <div class="form-floating">
+                <input type="email" class="form-control" id="email" placeholder="Email" value="poornesh@example.com">
+                <label for="email">Email Address</label>
+              </div>
+            </div>
+            <div class="col-md-6">
+              <div class="form-floating">
+                <input type="tel" class="form-control" id="phone" placeholder="Mobile Number" value="+91 98765 43210">
+                <label for="phone">Mobile Number</label>
+              </div>
+            </div>
+            <div class="col-12 text-end">
+              <button class="btn btn-danger px-4">Save Changes</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Data Usage and Plan Section -->
+  <div class="row g-4 mb-4">
+    <!-- Data Usage -->
+    <div class="col-lg-6">
+      <div class="data-usage-card p-4">
+        <h5 class="fw-bold mb-4"><i class="fas fa-chart-bar text-danger me-2"></i> Data Usage</h5>
+        <div class="mb-4">
+          <div class="d-flex justify-content-between mb-2">
+            <span class="text-muted">Data</span>
+            <span class="fw-bold">1.2 GB / 2 GB</span>
+          </div>
+          <div class="progress data-progress">
+            <div class="progress-bar bg-danger" role="progressbar" style="width: 60%" aria-valuenow="60" aria-valuemin="0" aria-valuemax="100"></div>
+          </div>
+        </div>
+        <div class="mb-4">
+          <div class="d-flex justify-content-between mb-2">
+            <span class="text-muted">Calls</span>
+            <span class="fw-bold d-flex align-items-center">
+                                <span class="unlimited-badge me-2"><i class="fas fa-infinity me-1"></i> Unlimited</span>
+                            </span>
+          </div>
+          <div class="progress data-progress">
+            <div class="progress-bar bg-success" role="progressbar" style="width: 100%" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100"></div>
+          </div>
+        </div>
+        <div>
+          <div class="d-flex justify-content-between mb-2">
+            <span class="text-muted">SMS</span>
+            <span class="fw-bold">100 / 100</span>
+          </div>
+          <div class="progress data-progress">
+            <div class="progress-bar bg-danger" role="progressbar" style="width: 100%" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Current Plan -->
+    <div class="col-lg-6">
+      <div class="data-usage-card p-4">
+        <div class="d-flex justify-content-between align-items-center mb-4">
+          <h5 class="fw-bold m-0"><i class="fas fa-sim-card text-danger me-2"></i> Current Plan</h5>
+          <span class="plan-badge">₹299 Plan</span>
+        </div>
+        <div class="row">
+          <div class="col-6 mb-3">
+            <span class="text-muted d-block">Plan Name</span>
+            <span class="fw-bold">Value Pack 299</span>
+          </div>
+          <div class="col-6 mb-3">
+            <span class="text-muted d-block">Price</span>
+            <span class="fw-bold">₹299</span>
+          </div>
+          <div class="col-6 mb-3">
+            <span class="text-muted d-block">Activation Date</span>
+            <span class="fw-bold">Feb 10, 2025</span>
+          </div>
+          <div class="col-6 mb-3">
+            <span class="text-muted d-block">Expiry Date</span>
+            <span class="fw-bold">Mar 10, 2025</span>
+          </div>
+          <div class="col-6 mb-3">
+            <span class="text-muted d-block">Data</span>
+            <span class="fw-bold">2 GB</span>
+          </div>
+          <div class="col-6 mb-3">
+            <span class="text-muted d-block">Validity</span>
+            <span class="fw-bold">28 Days</span>
+          </div>
+        </div>
+        <div class="d-grid gap-2 mt-3">
+          <button class="btn btn-danger">Recharge Now</button>
+          <button class="btn btn-danger-soft">View All Plans</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Recent Recharges -->
+  <div class="row mb-4">
+    <div class="col-12">
+      <div class="card profile-card">
+        <div class="card-body p-4">
+          <div class="d-flex justify-content-between align-items-center mb-4">
+            <h5 class="fw-bold m-0"><i class="fas fa-history text-danger me-2"></i> Recent Recharges</h5>
+            <button class="btn btn-danger-soft btn-sm">View All</button>
+          </div>
+
+          <div class="row g-3">
+            <!-- Recharge 1 -->
+            <div class="col-md-6">
+              <div class="card transaction-card border-0 shadow-sm">
+                <div class="card-body p-3">
+                  <div class="d-flex justify-content-between">
+                    <div>
+                      <h6 class="fw-bold mb-1">Value Pack 299</h6>
+                      <p class="text-muted small mb-0">Feb 10, 2025</p>
+                    </div>
+                    <div class="text-end">
+                      <h6 class="fw-bold text-danger mb-1">₹299</h6>
+                      <span class="badge bg-success">Completed</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Recharge 2 -->
+            <div class="col-md-6">
+              <div class="card transaction-card border-0 shadow-sm">
+                <div class="card-body p-3">
+                  <div class="d-flex justify-content-between">
+                    <div>
+                      <h6 class="fw-bold mb-1">Data Add-on (1GB)</h6>
+                      <p class="text-muted small mb-0">Jan 25, 2025</p>
+                    </div>
+                    <div class="text-end">
+                      <h6 class="fw-bold text-danger mb-1">₹49</h6>
+                      <span class="badge bg-success">Completed</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Recharge 3 -->
+            <div class="col-md-6">
+              <div class="card transaction-card border-0 shadow-sm">
+                <div class="card-body p-3">
+                  <div class="d-flex justify-content-between">
+                    <div>
+                      <h6 class="fw-bold mb-1">Value Pack 299</h6>
+                      <p class="text-muted small mb-0">Jan 13, 2025</p>
+                    </div>
+                    <div class="text-end">
+                      <h6 class="fw-bold text-danger mb-1">₹299</h6>
+                      <span class="badge bg-success">Completed</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Recharge 4 -->
+            <div class="col-md-6">
+              <div class="card transaction-card border-0 shadow-sm">
+                <div class="card-body p-3">
+                  <div class="d-flex justify-content-between">
+                    <div>
+                      <h6 class="fw-bold mb-1">ISD Pack</h6>
+                      <p class="text-muted small mb-0">Dec 20, 2024</p>
+                    </div>
+                    <div class="text-end">
+                      <h6 class="fw-bold text-danger mb-1">₹149</h6>
+                      <span class="badge bg-success">Completed</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Bootstrap JS Bundle with Popper -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

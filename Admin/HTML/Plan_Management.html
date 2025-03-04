@@ -1,0 +1,265 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Plan Management</title>
+  <!-- Tailwind CSS -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <!-- Font Awesome -->
+  <link
+    href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css"
+    rel="stylesheet"
+  />
+</head>
+<body class="bg-gray-100">
+<div class="flex flex-col md:flex-row h-screen">
+  <!-- Sidebar -->
+  <aside id="sidebar" class="bg-white w-64 p-6 flex flex-col fixed inset-y-0 left-0 transform -translate-x-full transition-transform duration-200 ease-in-out md:static md:translate-x-0">
+    <div class="flex items-center mb-8">
+      <span class="text-xl font-bold">Mobi Comm</span>
+    </div>
+    <nav>
+      <ul>
+        <li class="mb-4">
+          <a class="flex items-center text-blue-600" href="Dashboard.html">
+            <i class="fas fa-tachometer-alt mr-3"></i>
+            Dashboard
+          </a>
+        </li>
+        <li class="mb-4">
+          <a class="flex items-center text-blue-600" href="Plan_Management.html">
+            <i class="fas fa-tasks mr-3"></i>
+            Plan Management
+          </a>
+        </li>
+        <li class="mb-4">
+          <a class="flex items-center text-gray-600" href="User_Management.html">
+            <i class="fas fa-user mr-3"></i>
+            User Management
+          </a>
+        </li>
+      </ul>
+    </nav>
+    <div class="mt-auto">
+      <a class="flex items-center text-gray-600" href="Login.html">
+        <i class="fas fa-sign-out-alt mr-3"></i>
+        Log out
+      </a>
+    </div>
+  </aside>
+
+  <!-- Main Content Container -->
+  <div class="flex-1 flex flex-col">
+    <!-- Mobile Header -->
+    <header class="flex items-center justify-between p-4 bg-white shadow md:hidden">
+      <button id="mobile-menu-button" class="p-2">
+        <i class="fas fa-bars text-xl"></i>
+      </button>
+      <h1 class="text-2xl font-semibold flex-1 text-right">Plan Management</h1>
+    </header>
+    <!-- Desktop Header -->
+    <header class="hidden md:flex items-center justify-between p-6 bg-white shadow">
+      <h1 class="text-2xl font-semibold">Plan Management</h1>
+      <button onclick="openAddPlanModal()" class="bg-blue-600 hover:bg-blue-700 text-white py-2 px-4 rounded">
+        Add New Plan
+      </button>
+    </header>
+
+    <!-- Page Content -->
+    <main class="flex-1 p-6 overflow-auto">
+      <!-- Plan Table -->
+      <div class="bg-white shadow rounded-lg overflow-hidden">
+        <table class="min-w-full">
+          <thead class="bg-blue-600">
+          <tr>
+            <th class="px-6 py-3 text-left text-sm font-medium text-white">Category</th>
+            <th class="px-6 py-3 text-left text-sm font-medium text-white">Price</th>
+            <th class="px-6 py-3 text-left text-sm font-medium text-white">Data</th>
+            <th class="px-6 py-3 text-left text-sm font-medium text-white">Validity</th>
+            <th class="px-6 py-3 text-left text-sm font-medium text-white">Calls</th>
+            <th class="px-6 py-3 text-left text-sm font-medium text-white">Benefits</th>
+            <th class="px-6 py-3 text-center text-sm font-medium text-white">Status</th>
+            <th class="px-6 py-3 text-center text-sm font-medium text-white">Manage</th>
+          </tr>
+          </thead>
+          <tbody id="planTableBody" class="divide-y divide-gray-200">
+          <!-- Plan rows will be injected here -->
+          </tbody>
+        </table>
+      </div>
+    </main>
+  </div>
+</div>
+
+<!-- Add Plan Modal -->
+<div class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center hidden" id="overlay">
+  <div class="bg-white rounded-lg p-6 w-full max-w-md" id="addPlanModal">
+    <h3 class="text-xl font-bold mb-4">Add New Plan</h3>
+    <form id="planForm">
+      <div class="mb-4">
+        <label for="category" class="block text-sm font-medium text-gray-700">Category</label>
+        <select id="category" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm" required>
+          <option value="">Select Category</option>
+        </select>
+      </div>
+      <div class="mb-4">
+        <label for="price" class="block text-sm font-medium text-gray-700">Price</label>
+        <input type="number" id="price" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm" placeholder="Price" required />
+      </div>
+      <div class="mb-4">
+        <label for="data" class="block text-sm font-medium text-gray-700">Data</label>
+        <input type="text" id="data" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm" placeholder="Data" />
+      </div>
+      <div class="mb-4">
+        <label for="validity" class="block text-sm font-medium text-gray-700">Validity</label>
+        <input type="text" id="validity" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm" placeholder="Validity" />
+      </div>
+      <div class="mb-4">
+        <label for="calls" class="block text-sm font-medium text-gray-700">Calls</label>
+        <input type="text" id="calls" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm" placeholder="Calls" />
+      </div>
+      <div class="mb-4">
+        <label for="benefits" class="block text-sm font-medium text-gray-700">Benefits</label>
+        <input type="text" id="benefits" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm" placeholder="Benefits" />
+      </div>
+      <div class="flex justify-end space-x-4">
+        <button type="button" onclick="closeAddPlanModal()" class="bg-red-500 hover:bg-red-600 text-white py-2 px-4 rounded">
+          Cancel
+        </button>
+        <button type="submit" class="bg-green-600 hover:bg-green-700 text-white py-2 px-4 rounded">
+          Add Plan
+        </button>
+      </div>
+    </form>
+  </div>
+</div>
+
+<!-- Scripts -->
+<script>
+  async function fetchPlans() {
+    try {
+      const response = await fetch('http://localhost:3000/plans');
+      const plans = await response.json();
+      populateTable(plans);
+      populateCategories();
+    } catch (error) {
+      console.error('Error fetching plans:', error);
+    }
+  }
+
+  function populateTable(plans) {
+    const tbody = document.getElementById('planTableBody');
+    tbody.innerHTML = '';
+    const sortedPlans = plans.sort((a, b) => b.active - a.active);
+    sortedPlans.forEach(plan => {
+      const row = document.createElement('tr');
+      row.className = 'hover:bg-gray-50';
+      row.innerHTML = `
+            <td class="px-6 py-4">${plan.category}</td>
+            <td class="px-6 py-4">₹${plan.price}</td>
+            <td class="px-6 py-4">${plan.data || '-'}</td>
+            <td class="px-6 py-4">${plan.validity || '-'}</td>
+            <td class="px-6 py-4">${plan.calls || '-'}</td>
+            <td class="px-6 py-4">${plan.benefits || '-'}</td>
+            <td class="px-6 py-4 text-center">
+              <div class="w-16 h-8 flex items-center rounded-full cursor-pointer ${plan.active ? 'bg-green-500' : 'bg-gray-300'}" onclick="toggleStatus(this, ${plan.id})">
+                <div class="w-6 h-6 bg-white rounded-full transform transition duration-300 ${plan.active ? 'translate-x-8' : 'translate-x-0'}"></div>
+              </div>
+            </td>
+            <td class="px-6 py-4 text-center">
+              <button class="bg-blue-500 hover:bg-blue-600 text-white py-1 px-3 rounded" onclick="editPlan(${plan.id})">
+                Edit
+              </button>
+            </td>
+          `;
+      tbody.appendChild(row);
+    });
+  }
+
+  async function populateCategories() {
+    try {
+      const response = await fetch('http://localhost:3000/categories');
+      const categories = await response.json();
+      const select = document.getElementById('category');
+      select.innerHTML = '<option value="">Select Category</option>';
+      categories.forEach(category => {
+        const option = document.createElement('option');
+        option.value = category.id;
+        option.textContent = category.name;
+        select.appendChild(option);
+      });
+    } catch (error) {
+      console.error('Error fetching categories:', error);
+    }
+  }
+
+  document.getElementById('planForm').addEventListener('submit', async (e) => {
+    e.preventDefault();
+    const newPlan = {
+      category: document.getElementById('category').value,
+      price: document.getElementById('price').value,
+      data: document.getElementById('data').value,
+      validity: document.getElementById('validity').value,
+      calls: document.getElementById('calls').value,
+      benefits: document.getElementById('benefits').value,
+      active: true
+    };
+    try {
+      await fetch('http://localhost:3000/plans', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(newPlan)
+      });
+      fetchPlans();
+      closeAddPlanModal();
+    } catch (error) {
+      console.error('Error adding plan:', error);
+    }
+  });
+
+  async function toggleStatus(element, id) {
+    const innerDiv = element.querySelector('div');
+    const isActive = innerDiv.classList.contains('translate-x-8');
+    try {
+      await fetch(`http://localhost:3000/plans/${id}`, {
+        method: 'PATCH',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ active: !isActive })
+      });
+      if (isActive) {
+        element.classList.replace('bg-green-500', 'bg-gray-300');
+        innerDiv.classList.replace('translate-x-8', 'translate-x-0');
+      } else {
+        element.classList.replace('bg-gray-300', 'bg-green-500');
+        innerDiv.classList.replace('translate-x-0', 'translate-x-8');
+      }
+      fetchPlans();
+    } catch (error) {
+      console.error('Error updating status:', error);
+    }
+  }
+
+  function editPlan(id) {
+    alert('Edit plan with ID: ' + id);
+  }
+
+  function openAddPlanModal() {
+    document.getElementById('overlay').classList.remove('hidden');
+  }
+  function closeAddPlanModal() {
+    document.getElementById('overlay').classList.add('hidden');
+    document.getElementById('planForm').reset();
+  }
+
+  // Mobile Sidebar Toggle
+  const mobileMenuButton = document.getElementById("mobile-menu-button");
+  const sidebar = document.getElementById("sidebar");
+  mobileMenuButton.addEventListener("click", () => {
+    sidebar.classList.toggle("-translate-x-full");
+  });
+
+  fetchPlans();
+</script>
+</body>
+</html>

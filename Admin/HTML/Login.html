@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Login Page</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Baloo+Bhaijaan+2&display=swap" rel="stylesheet">
+  <style>
+    body {
+      background: #6c757d;
+      font-family: 'Baloo Bhaijaan 2', sans-serif;
+      margin: 0;
+      color: #fff;
+      overflow-x: hidden;
+      text-align: center;
+      position: relative;
+    }
+    .navbar {
+      background: transparent;
+      box-shadow: none;
+      width: 100%;
+      position: fixed;
+      top: 0;
+      left: 0;
+      z-index: 10;
+    }
+    .navbar .navbar-brand {
+      font-size: 1.75rem;
+      font-weight: bold;
+      color: #fff;
+      padding-top: 20px;
+    }
+    .login-card {
+      border-radius: 1.5rem;
+      box-shadow: 0 0 20px rgba(0,0,0,0.1);
+      overflow: hidden;
+      background-color: #fff;
+      max-width: 800px;
+      width: 100%;
+      margin: 120px auto 40px;
+    }
+    .login-form {
+      padding: 30px;
+    }
+    .btn-custom {
+      background-color: #3b82f6;
+      border: none;
+      position: relative;
+      overflow: hidden;
+      transition: background-color 0.4s;
+    }
+    .btn-custom:hover {
+      background-color: #2563eb;
+    }
+    .btn-text {
+      transition: opacity 0.2s ease;
+    }
+    .spinner {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      width: 20px;
+      height: 20px;
+      margin: -10px 0 0 -10px;
+      border: 2px solid rgba(255,255,255,0.5);
+      border-top-color: #fff;
+      border-radius: 50%;
+      animation: spin 1s linear infinite;
+      opacity: 0;
+      transition: opacity 0.2s;
+    }
+    .loading {
+      background-color: #ff6f61 !important;
+    }
+    .loading .btn-text {
+      opacity: 0;
+    }
+    .loading .spinner {
+      opacity: 1;
+    }
+    @keyframes spin {
+      from { transform: rotate(0deg); }
+      to { transform: rotate(360deg); }
+    }
+    .overlay {
+      position: absolute;
+      width: 100px;
+      height: 100px;
+      background: #ff6f61;
+      border-radius: 50%;
+      transform: scale(0);
+      transition: transform 1s ease-out;
+      pointer-events: none;
+      z-index: 999;
+    }
+    .password-toggle {
+      position: absolute;
+      right: 10px;
+      top: 50%;
+      transform: translateY(-50%);
+      cursor: pointer;
+      color: #6c757d;
+    }
+  </style>
+</head>
+<body>
+<div class="overlay" id="overlay"></div>
+<nav class="navbar navbar-light">
+  <div class="w-100 text-center">
+    <span class="navbar-brand"><i class="fas fa-user-shield"></i> Mobi Comm Admin Login</span>
+  </div>
+</nav>
+<div class="container my-5">
+  <div class="row justify-content-center">
+    <div class="col-12 col-lg-10">
+      <div class="login-card">
+        <div class="row g-0">
+          <div class="col-12 col-lg-6">
+            <div class="login-form">
+              <h2 class="fw-bold mb-4 text-center text-dark">Login</h2>
+              <form id="loginForm">
+                <div class="mb-3">
+                  <label for="username" class="form-label text-muted">Username or email</label>
+                  <input type="text" class="form-control" id="username" placeholder="Username or email">
+                </div>
+                <div class="mb-3 position-relative">
+                  <label for="password" class="form-label text-muted">Password</label>
+                  <input type="password" class="form-control" id="password" placeholder="Password">
+                  <span class="password-toggle" id="togglePassword"><i class="fas fa-eye"></i></span>
+                  <a href="#" class="d-block text-end text-primary text-decoration-none mt-1">Forgot password?</a>
+                </div>
+                <div class="mb-3">
+                  <button type="button" id="loginButton" class="btn btn-custom text-white w-100 py-2">
+                    <span class="btn-text">Login</span>
+                    <span class="spinner"></span>
+                  </button>
+                </div>
+                <div id="errorMessage" class="text-danger"></div>
+              </form>
+            </div>
+          </div>
+          <div class="col-12 col-lg-6 d-none d-lg-block">
+            <img src="/Admin/Assets/Images/signup-image-removebg-preview_enhanced.png" alt="Login Image" class="img-fluid w-100" style="height:100%; object-fit: cover;">
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<script>
+  const togglePassword = document.getElementById('togglePassword');
+  const passwordInput = document.getElementById('password');
+  togglePassword.addEventListener('click', function() {
+    const type = passwordInput.getAttribute('type') === 'password' ? 'text' : 'password';
+    passwordInput.setAttribute('type', type);
+    this.querySelector('i').classList.toggle('fa-eye-slash');
+  });
+  document.getElementById('loginButton').addEventListener('click', function() {
+    const btn = document.getElementById('loginButton');
+    const overlay = document.getElementById('overlay');
+    const username = document.getElementById('username').value;
+    const password = document.getElementById('password').value;
+    const errorMessage = document.getElementById('errorMessage');
+    if (username === 'admin@mobi.com' && password === 'admin123') {
+      errorMessage.textContent = '';
+      btn.classList.add('loading');
+      const btnRect = btn.getBoundingClientRect();
+      const centerX = btnRect.left + btnRect.width / 2;
+      const centerY = btnRect.top + btnRect.height / 2;
+      overlay.style.top = (centerY - 50) + 'px';
+      overlay.style.left = (centerX - 50) + 'px';
+      setTimeout(() => {
+        btn.classList.remove('loading');
+        const diagonal = Math.sqrt(window.innerWidth ** 2 + window.innerHeight ** 2);
+        const scaleFactor = diagonal / 50;
+        overlay.style.transform = `scale(${scaleFactor})`;
+        setTimeout(() => {
+          window.location.href = 'Dashboard.html';
+        }, 500);
+      }, 1000);
+    } else {
+      errorMessage.textContent = 'Invalid username or password';
+    }
+  });
+</script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>
